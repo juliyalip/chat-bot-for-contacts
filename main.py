@@ -6,24 +6,19 @@ def main():
     def print_menu():
         print("\nMenu")
         print("-" * 30)
-
         for key, (desc, _) in commands.commands.items():
              print(f"{key :<15} : {desc: <20}") 
 
     while True:
         print_menu()
         choice= input("Enter your choice: ").strip()
-
         if choice in ["close", "exit"]:
             print("Good bye!")
             #save_data(book)
             break
-
         if choice not in commands:
             print("Invalid selection. Try again.")
             continue
-
-
         desc, handler = commands[choice]
         if choice == "exit":
             print("Data saved. Goodbay")
