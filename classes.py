@@ -59,23 +59,26 @@ class Record:
         else:
             return "The phone was not found"
             
-    
     def __str__(self):
         phones=", ".join(str(phone) for phone in self.phones)
-        return f"name: {self.name}, phones: {phones} birthday: {self.birthday if self.birthday else "not set"}"
-    
+        return f"name: {self.name}, phones: {phones}, birthday: {self.birthday if self.birthday else "not set"}"
+
+
+
 # Phonebook
 class Phonebook(UserDict):
     def add_record(self, record):
         self.data[record.id] = record
         return "contact was added"
     
-    def find_record(self, name:str):
+    def find_records(self, name:str):
+        contacts=[]
         for record in self.data.values():
-            if name == record.name.value:
-                return record
-        else:
-            raise KeyError("The contact was not found")   
+            if name.lower() == record.name.value.lower():
+                contacts.append(record)
+        if not contacts:
+            raise KeyError("The contact was not found")
+        return contacts
     
     def delete_record(self, name: str):
         record = self.find_record(name)
@@ -92,11 +95,7 @@ class Phonebook(UserDict):
 
 
 
-bob=Record('Bob')
-bob.add_phone('121323')
-book=Phonebook()
-book.add_record(bob)
-   
+
         
 
 

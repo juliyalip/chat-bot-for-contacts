@@ -1,34 +1,42 @@
-import commands
-from classes import AdressBook
+from classes import Phonebook
+from api_handlers import save_data, load_data
+import handlers
 
 def main():
+     
+    book=load_data()
 
-    def print_menu():
+    def print_menu(_=None):
         print("\nMenu")
         print("-" * 30)
-        for key, (desc, _) in commands.commands.items():
+        for key, (desc, _) in commands.items():
              print(f"{key :<15} : {desc: <20}") 
 
+    commands = {
+    "add": ("add contact", handlers.add_contact),
+    "all": ("list contacts", handlers.show_all),
+    "search": ("search contact", handlers.search_contact),
+    "change" : ("change contact",  handlers.change_contact),
+    "delete": ("delete contact", handlers.delete_contact),
+    "help": ("help", print_menu),
+    "exit": ('exit & save' , None)
+    }
+
+    print("Welcome to the assistant bot!")
+    print(print_menu())         
     while True:
-        print_menu()
-        choice= input("Enter your choice: ").strip()
-        if choice in ["close", "exit"]:
-            print("Good bye!")
-            #save_data(book)
-            break
+        choice= input("Enter your command: ").strip()
         if choice not in commands:
             print("Invalid selection. Try again.")
             continue
+
         desc, handler = commands[choice]
-        if choice == "exit":
-            print("Data saved. Goodbay")
-            # save data
+        if choice in ["close", "exit"]:   
+            save_data(book)
+            print("Data saved. Good bye!")
             break
-
-        target_book = AdressBook()
-
-        result = handler(target_book)
-
+        
+        result = handler(book)
         if result:
             print(result)
 
